@@ -1,0 +1,351 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Ethereal ivory: soft white paper, warm cream and textured linen, champagne
+   gold for leaf, foil and ink accents, warm taupe type. Feathers, not flowers.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-paper: #ffffff;
+  --color-ivory: #faf9f6;
+  --color-linen: #f3f0ea;
+  --color-linen-deep: #e6dfd2;
+  --color-gold: #d4af37;
+  --color-gold-light: #ecd9a0;
+  /* Champagne is gold deepened until it reads as text (≥ 4.5:1 on ivory). */
+  --color-champagne: #8b6b20;
+  --color-champagne-soft: #b8963f;
+  --color-ink: #3d3a37;
+  --color-muted: #77706a;
+
+  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-script: 'Allura', 'Snell Roundhand', cursive;
+  /* Engraved copperplate, for the couple's names only. */
+  --font-display: 'Pinyon Script', 'Snell Roundhand', 'Allura', cursive;
+  --font-sans: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-my: 'Noto Serif Myanmar', 'Myanmar Text', 'Myanmar Sangam MN', serif;
+
+  --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-float: 0 1px 2px rgb(61 52 40 / 0.05), 0 30px 60px -30px rgb(61 52 40 / 0.28);
+  --shadow-card: 0 1px 1px rgb(61 52 40 / 0.04), 0 12px 24px -12px rgb(61 52 40 / 0.16), 0 40px 80px -40px rgb(61 52 40 / 0.24);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-spin-slow: spin 22s linear infinite;
+}
+
+@keyframes foil-sweep {
+  0% {
+    background-position:
+      140% 0,
+      0 0;
+  }
+  40%,
+  100% {
+    background-position:
+      -40% 0,
+      0 0;
+  }
+}
+
+@keyframes monogram-shine {
+  0% {
+    transform: translateX(0);
+  }
+  40%,
+  100% {
+    transform: translateX(240px);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    /* The scrollbar's space is reserved while the intro locks scrolling, so the
+       page never shifts under the letter as it lands on the hero card. */
+    scrollbar-gutter: stable;
+  }
+
+  html.is-locked {
+    overflow: hidden;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* A whisper of paper grain, fixed so it never repaints on scroll. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.45;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.26 0 0 0 0 0.2 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  [lang='my'] {
+    font-family: var(--font-my);
+    line-height: 1.95;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-champagne);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: rgb(212 175 55 / 0.25);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* --- paper & foil ------------------------------------------------------ */
+
+  /* Cotton-linen stock: warm ground, cross-woven fibres and a little tooth. */
+  .linen {
+    background-color: #f7f4ee;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.28 0 0 0 0.16 -0.04'/%3E%3C/filter%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.012' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.28 0 0 0 0.13 -0.04'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.34 0 0 0 0 0.25 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Fine card stock for the printed invitation. */
+  .paper-stock {
+    background-color: var(--color-paper);
+    background-image:
+      radial-gradient(120% 90% at 30% 0%, rgb(255 255 255 / 0.9), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, #ffffff, #fcfbf8);
+  }
+
+  /* Soft champagne foil with a pressed lattice-and-feather liner pattern. */
+  .foil {
+    background-color: #dcc58f;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23fff8e3' stroke-opacity='.55' stroke-width='.7'%3E%3Cpath d='M0 0l44 44M44 0L0 44'/%3E%3Cpath d='M22 13c2.6 2.8 2.6 6.2 0 9-2.6-2.8-2.6-6.2 0-9zM22 22v9'/%3E%3C/g%3E%3Ccircle cx='0' cy='22' r='1.1' fill='%23fff8e3' fill-opacity='.6'/%3E%3Ccircle cx='44' cy='22' r='1.1' fill='%23fff8e3' fill-opacity='.6'/%3E%3C/svg%3E"),
+      linear-gradient(115deg, #c9ad6e 0%, #efe0b6 20%, #d6bc80 38%, #f7ecd0 52%, #ceb276 68%, #ead7a6 84%, #bfa161 100%);
+  }
+
+  /* A band of light that sweeps across foil when it first catches the eye. */
+  .sheen {
+    background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.65) 50%, transparent 62%) no-repeat;
+    background-size: 260% 100%;
+    background-position: 130% 0%;
+    mix-blend-mode: soft-light;
+  }
+
+  /* Section backgrounds that melt into the page rather than stopping in a hard band. */
+  .section-wash {
+    background: linear-gradient(180deg, transparent, var(--color-linen) 16%, var(--color-linen) 84%, transparent);
+  }
+
+  .section-wash-paper {
+    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.85) 16%, rgb(255 255 255 / 0.85) 84%, transparent);
+  }
+
+  .gold-leaf {
+    border: 1px solid transparent;
+    border-image: linear-gradient(135deg, #b8963f, #ecd9a0 22%, #d4af37 45%, #f3e6bc 62%, #c29d3c 82%, #9e7d2c) 1;
+  }
+
+  .gold-text {
+    background: linear-gradient(100deg, #8b6b20 0%, #c9a54a 30%, #9a7826 52%, #d4b25a 74%, #87671d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* A 1px gold-leaf line that follows any border-radius (border-image can't). */
+  .gold-keyline {
+    padding: 1px;
+    background: linear-gradient(140deg, #b8963f, #f0deaa 24%, #c9a23e 46%, #f6ead0 64%, #b48f35 84%, #8f6f22);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+
+  /* Foil that catches the light: a slow highlight drifts across now and then. */
+  .foil-sweep {
+    background-image:
+      linear-gradient(105deg, transparent 42%, rgb(255 248 222 / 0.95) 50%, transparent 58%),
+      linear-gradient(100deg, #8b6b20 0%, #c9a54a 30%, #9a7826 52%, #d4b25a 74%, #87671d 100%);
+    background-size:
+      300% 100%,
+      100% 100%;
+    background-position:
+      140% 0,
+      0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  [data-live] .foil-sweep {
+    animation: foil-sweep 7s var(--ease-silk) 1.2s infinite;
+  }
+
+  /* The monogram's band of light, in step with the ampersand's sweep. */
+  [data-live] .monogram-shine {
+    animation: monogram-shine 7s var(--ease-silk) 1.2s infinite;
+  }
+
+  /* Ink pressed into cotton: a hair of light below, a hair of shade above. */
+  .letterpress {
+    text-shadow:
+      0 1px 0 rgb(255 255 255 / 0.9),
+      0 -0.5px 0 rgb(61 52 40 / 0.08);
+  }
+
+  /* Engraved small capitals in the serif, for stationery labels. */
+  .caps {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  /* --- controls ---------------------------------------------------------- */
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.1rem;
+    padding: 0.9rem 1.9rem;
+    overflow: hidden;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 0.5s var(--ease-silk),
+      box-shadow 0.5s var(--ease-silk),
+      background-color 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
+    transform: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #a5832e, #8b6b20 55%, #7a5d1a);
+    color: var(--color-paper);
+    box-shadow:
+      inset 0 1px 0 rgb(255 240 200 / 0.35),
+      0 14px 30px -14px rgb(139 107 32 / 0.65);
+  }
+
+  .btn-primary:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 240 200 / 0.35),
+      0 20px 40px -16px rgb(139 107 32 / 0.7);
+  }
+
+  .btn-ghost {
+    border: 1px solid rgb(61 58 55 / 0.18);
+    background: rgb(255 255 255 / 0.6);
+    color: var(--color-ink);
+    backdrop-filter: blur(8px);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-champagne);
+    color: var(--color-champagne);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3.2rem;
+    padding: 0.85rem 0.1rem;
+    border: 0;
+    border-bottom: 1px solid rgb(61 58 55 / 0.2);
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.25rem; /* ≥16px stops iOS zooming on focus */
+    transition: border-color 0.25s;
+  }
+
+  .field::placeholder {
+    color: rgb(119 112 106 / 0.6);
+  }
+
+  .field:focus {
+    outline: none;
+    border-bottom-color: var(--color-gold);
+  }
+
+  select.field {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2377706a' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 1.6rem;
+  }
+}
+
+@utility backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-spin-slow,
+  [data-live] .foil-sweep,
+  [data-live] .monogram-shine {
+    animation: none;
+  }
+}

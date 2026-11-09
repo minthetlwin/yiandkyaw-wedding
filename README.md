@@ -47,10 +47,14 @@ description, and `public/share/kyaw-and-shwe.jpg`: the couple's portrait with
   from it at build time by `build/share-metadata.ts`; `index.html` has none to
   keep in step. The build warns if the image isn't ~1200×630 or is over 300 KB
   (WhatsApp's limit).
-- **Set the site's address when you build**, because preview images need a full URL:
-  `SITE_URL=https://your-domain npm run build`. Vercel, Netlify and Cloudflare
-  Pages set it for you. Without it the build still works but prints a warning, and
-  some chat apps may show the preview without its photo.
+- **The site's address must be right**, because preview photos need a full URL.
+  When Netlify, Vercel or Cloudflare Pages build the site they supply it, and it
+  follows renames and custom domains. For builds on your own computer it comes
+  from `SITE_URL` in `.env.production`: update it if the site's address changes,
+  or every preview photo points at the old, dead address.
+- **After every deploy, run `npm run check:share`.** It loads the live site the
+  way Facebook/Messenger, WhatsApp, iMessage, Telegram, Viber, X, LinkedIn,
+  Slack, Discord and Google do, and confirms each can download the photo.
 - **To change the card**, edit `scripts/share-card.html` and re-render it with the
   command at the top of that file. The iMessage / home-screen icon
   (`public/apple-touch-icon.png`) comes from `scripts/touch-icon.html` the same way.

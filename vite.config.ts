@@ -5,19 +5,28 @@ import { shareMetadata } from './build/share-metadata.ts'
 
 /**
  * The site's public address, for link previews: chat apps only show the share
- * image when its URL is absolute. Set SITE_URL (e.g. https://kyawandshwe.com),
- * or let the host provide it: Vercel, Netlify and Cloudflare Pages do.
+ * image when its URL is absolute. In order of trust:
+ *   1. SITE_URL set in the build's environment (CI, the host's settings);
+ *   2. the address the host reports for this build (Netlify, Vercel,
+ *      Cloudflare Pages), which follows renames and custom domains;
+ *   3. SITE_URL in .env files, a fallback for local builds. It ranks last
+ *      because it goes stale: a renamed site would keep advertising the old
+ *      address, and every preview photo would 404.
  */
-function siteUrl(env: Record<string, string>) {
-  const fromVercel = env.VERCEL_PROJECT_PRODUCTION_URL && `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
-  const url = env.SITE_URL || env.VITE_SITE_URL || fromVercel || env.URL || env.CF_PAGES_URL || ''
+function siteUrl(fileEnv: Record<string, string>) {
+  const env = process.env
+  const fromHost =
+    env.URL || // Netlify: the site's primary address (custom domain if set)
+    (env.VERCEL_PROJECT_PRODUCTION_URL && `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`) ||
+    env.CF_PAGES_URL
+  const url = env.SITE_URL || fromHost || fileEnv.SITE_URL || fileEnv.VITE_SITE_URL || ''
   return url.replace(/\/+$/, '')
 }
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // Real environment variables (CI, the host) win over the .env files.
-  const env = { ...loadEnv(mode, process.cwd(), ''), ...process.env } as Record<string, string>
+  // .env files, with real environment variables (CI, the host) on top.
+  const env = loadEnv(mode, process.cwd(), '')
   return {
     // Served from a folder (e.g. GitHub Pages: /yiandkyaw-wedding/) or a domain's root.
     base: env.BASE_PATH || '/',

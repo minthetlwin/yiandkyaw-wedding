@@ -30,10 +30,10 @@ function Crest({ paint }: { paint: string }) {
         <path key={i} d={LEAF} fill={paint} opacity="0.85" transform={`translate(${l.x.toFixed(2)} ${l.y.toFixed(2)}) rotate(${l.rotate.toFixed(1)})`} />
       ))}
       <text x="49" y="76" textAnchor="middle" fontFamily="'Pinyon Script', Allura, cursive" fontSize="50" fill={paint}>
-        {wedding.bride.short[0]}
+        {wedding.groom.short[0]}
       </text>
       <text x="72" y="80" textAnchor="middle" fontFamily="'Pinyon Script', Allura, cursive" fontSize="50" fill={paint}>
-        {wedding.groom.short[0]}
+        {wedding.bride.short[0]}
       </text>
     </>
   )
@@ -48,7 +48,7 @@ function Crest({ paint }: { paint: string }) {
 export function Monogram({ className = '' }: { className?: string }) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '')
   return (
-    <svg viewBox="0 0 120 120" className={className} role="img" aria-label={`${wedding.bride.short} and ${wedding.groom.short}`}>
+    <svg viewBox="0 0 120 120" className={className} role="img" aria-label={`${wedding.groom.short} and ${wedding.bride.short}`}>
       <defs>
         <linearGradient id={`${id}g`} gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="120" y2="100">
           <stop offset="0" stopColor="#9c7a25" />

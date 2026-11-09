@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
 import { wedding, type PaymentMethod } from '../config/wedding'
-import { CheckIcon, CopyIcon, DownloadIcon, HeartIcon } from './Icons'
+import { DownloadIcon, HeartIcon } from './Icons'
 import { SectionHeading } from './ui/Heading'
 import { Reveal } from './ui/motion'
 
@@ -8,7 +7,7 @@ export function Gifts() {
   return (
     <section id="gifts" aria-labelledby="gifts-title" className="relative scroll-mt-16 px-5 py-28 sm:px-8 md:py-36">
       <div className="mx-auto max-w-6xl">
-      <SectionHeading id="gifts-title" index="08" eyebrow="Wedding gifts" title="With love &" accent="gratitude" titleMy="မင်္ဂလာ လက်ဆောင်" />
+      <SectionHeading id="gifts-title" index="04" eyebrow="Wedding gifts" title="With love &" accent="gratitude" titleMy="မင်္ဂလာ လက်ဆောင်" />
       <Reveal className="mx-auto mb-14 max-w-2xl text-center">
         <HeartIcon className="mx-auto mb-4 size-7 text-champagne" />
         <p className="font-serif text-2xl leading-relaxed text-muted">
@@ -32,23 +31,6 @@ export function Gifts() {
 }
 
 function PaymentCard({ method }: { method: PaymentMethod }) {
-  const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    if (!copied) return
-    const id = window.setTimeout(() => setCopied(false), 2000)
-    return () => window.clearTimeout(id)
-  }, [copied])
-
-  async function copyName() {
-    try {
-      await navigator.clipboard.writeText(method.accountName)
-      setCopied(true)
-    } catch {
-      window.prompt('Copy the account name:', method.accountName)
-    }
-  }
-
   return (
     <Reveal className="w-full max-w-md">
       <div className="paper-stock relative rounded-[4px] p-8 shadow-[var(--shadow-card)] sm:p-10">
@@ -86,22 +68,9 @@ function PaymentCard({ method }: { method: PaymentMethod }) {
         </div>
       </dl>
 
-      <div className="grid grid-cols-2 gap-3">
-        <a className="btn btn-primary !px-3" href={method.qr.src} download={`${method.provider.replace(/\s+/g, '')}-QR.jpg`}>
-          <DownloadIcon width={18} height={18} /> Save QR
-        </a>
-        <button type="button" className="btn btn-ghost !px-3" onClick={copyName}>
-          {copied ? <CheckIcon width={18} height={18} /> : <CopyIcon width={18} height={18} />}
-          {copied ? 'Copied' : 'Copy name'}
-        </button>
-      </div>
-
-      <p className="mt-5 text-center text-sm text-muted">
-        On your phone? Save the QR, then in {method.provider} tap <strong className="text-ink">Scan</strong> and choose it from your photos.
-      </p>
-      <p lang="my" className="mt-1 text-center text-sm text-muted">
-        QR ကို သိမ်းဆည်းပြီး {method.provider} ရှိ Scan မှ ဓာတ်ပုံကို ရွေးချယ်၍ ပေးပို့နိုင်ပါသည်။
-      </p>
+      <a className="btn btn-primary w-full" href={method.qr.src} download={`${method.provider.replace(/\s+/g, '')}-QR.jpg`}>
+        <DownloadIcon width={18} height={18} /> Save QR
+      </a>
       </div>
     </Reveal>
   )

@@ -47,7 +47,7 @@ interface WaxSealProps {
  */
 export function WaxSeal({ half, className }: WaxSealProps) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '')
-  const [a, b] = [wedding.bride.short[0], wedding.groom.short[0]]
+  const [a, b] = [wedding.groom.short[0], wedding.bride.short[0]]
   const monogram = (fill: string, dx: number, dy: number, opacity = 1) => (
     <text
       x={100 + dx}

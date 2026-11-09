@@ -14,7 +14,7 @@ export function Marquee() {
   const item = (
     <span className="flex shrink-0 items-center gap-10 pr-10 md:gap-14 md:pr-14">
       <span className="font-display text-5xl leading-none text-ink md:text-7xl">
-        {wedding.bride.short} <span className="font-serif text-[0.7em] text-champagne italic">&amp;</span> {wedding.groom.short}
+        {wedding.groom.short} <span className="font-serif text-[0.7em] text-champagne italic">&amp;</span> {wedding.bride.short}
       </span>
       <Glint />
       <span className="font-serif text-4xl font-light tracking-[0.18em] text-ink/80 md:text-6xl">28 · 11 · 2026</span>

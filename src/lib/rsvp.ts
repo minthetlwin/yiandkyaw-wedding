@@ -11,12 +11,9 @@
 
 export interface RsvpSubmission {
   name: string
-  phone: string
   attending: boolean
   guests: number
   message: string
-  /** Dietary preference or allergy note (attending guests only). */
-  dietary: string
 }
 
 export interface RsvpStats {
@@ -136,20 +133,13 @@ export function validateSubmission(
   if (name.length < 2) return { ok: false, error: 'Please enter your name.' }
   if (name.length > 80) return { ok: false, error: 'Name is too long.' }
 
-  const phone = input.phone.trim()
-  if (phone && !/^[+\d][\d\s-]{5,19}$/.test(phone)) {
-    return { ok: false, error: 'Please enter a valid phone number.' }
-  }
-
   const guests = input.attending ? Math.floor(input.guests) : 0
   if (input.attending && (guests < 1 || guests > maxGuests)) {
     return { ok: false, error: `Party size must be between 1 and ${maxGuests}.` }
   }
 
-  const dietary = input.attending ? (input.dietary ?? '').trim().replace(/\s+/g, ' ').slice(0, 120) : ''
-
   return {
     ok: true,
-    value: { name, phone, attending: input.attending, guests, message: input.message.trim().slice(0, 500), dietary },
+    value: { name, attending: input.attending, guests, message: input.message.trim().slice(0, 500) },
   }
 }

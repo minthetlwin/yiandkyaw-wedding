@@ -1,13 +1,9 @@
-import { motion, useScroll, useTransform } from 'motion/react'
-import { useRef } from 'react'
-import { wedding, type Person, type Photo, type StoryChapter } from '../config/wedding'
+import { wedding, type Person, type Photo } from '../config/wedding'
 import { SectionHeading } from './ui/Heading'
 import { Reveal } from './ui/motion'
 
-const CAPTIONS = ['chapter one', 'chapter two', 'chapter three', 'chapter four', 'chapter five', 'chapter six']
-
-/** An instant photo: white border, a strip of linen tape, a handwritten caption. */
-function Polaroid({ photo, caption, focus }: { photo: Photo; caption: string; focus?: string }) {
+/** An instant photo: white border, a strip of linen tape, an optional handwritten caption. */
+function Polaroid({ photo, caption, focus }: { photo: Photo; caption?: string; focus?: string }) {
   return (
     <figure className="relative m-0 bg-paper p-3 pb-14 shadow-[var(--shadow-card)] sm:p-3.5 sm:pb-16">
       <span
@@ -28,9 +24,11 @@ function Polaroid({ photo, caption, focus }: { photo: Photo; caption: string; fo
         {/* a soft, warm wash, like film left in the sun */}
         <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(160deg,rgb(255_244_222/0.22),transparent_45%,rgb(212_175_55/0.08))]" />
       </div>
-      <figcaption className="absolute inset-x-0 bottom-3 text-center font-script text-[1.7rem] leading-none text-ink/75 sm:bottom-4 sm:text-3xl">
-        {caption}
-      </figcaption>
+      {caption && (
+        <figcaption className="absolute inset-x-0 bottom-3 text-center font-script text-[1.7rem] leading-none text-ink/75 sm:bottom-4 sm:text-3xl">
+          {caption}
+        </figcaption>
+      )}
     </figure>
   )
 }
@@ -39,7 +37,7 @@ function Polaroid({ photo, caption, focus }: { photo: Photo; caption: string; fo
 function Couple() {
   const people: Person[] = [wedding.groom, wedding.bride]
   return (
-    <div className="mx-auto mb-28 grid max-w-3xl grid-cols-2 gap-5 sm:gap-12 md:mb-40">
+    <div className="mx-auto grid max-w-3xl grid-cols-2 gap-5 sm:gap-12">
       {people.map((p, i) => (
         <Reveal key={p.name} delay={i * 0.12} className="text-center">
           <div className={i ? 'rotate-[2.5deg]' : '-rotate-[2.5deg]'}>
@@ -63,59 +61,13 @@ function Couple() {
   )
 }
 
-/** One memory. It fades and rises in as it scrolls into view, settles into its tilt, and dims as it leaves. */
-function Chapter({ chapter, index }: { chapter: StoryChapter; index: number }) {
-  const ref = useRef<HTMLLIElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const tilt = index % 2 ? 3 : -3
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.78, 1], [0, 1, 1, 0.3])
-  const y = useTransform(scrollYProgress, [0, 0.32], [80, 0])
-  const rotate = useTransform(scrollYProgress, [0, 0.36], [tilt * 2.6, tilt])
-  const textY = useTransform(scrollYProgress, [0.05, 0.36], [40, 0])
-  const flip = index % 2 === 1
-
-  return (
-    <li ref={ref} className="relative grid items-center gap-10 md:grid-cols-2 md:gap-24">
-      <motion.div style={{ opacity, y, rotate }} className={`mx-auto w-[min(76vw,21rem)] ${flip ? 'md:order-2' : ''}`}>
-        <Polaroid photo={chapter.photo} caption={CAPTIONS[index] ?? ''} />
-      </motion.div>
-      <motion.div style={{ opacity, y: textY }} className={`text-center ${flip ? 'md:text-right' : 'md:text-left'}`}>
-        <p className="font-serif text-6xl leading-none font-light text-transparent [-webkit-text-stroke:1px_var(--color-gold)] md:text-7xl">
-          {String(index + 1).padStart(2, '0')}
-        </p>
-        <h3 className="mt-4 font-serif text-4xl leading-tight font-light text-ink md:text-5xl">{chapter.title}</h3>
-        <p lang="my" className="mt-2 text-champagne">
-          {chapter.titleMy}
-        </p>
-        <p className={`mx-auto mt-4 max-w-sm font-serif text-xl leading-relaxed text-muted md:mx-0 ${flip ? 'md:ml-auto' : ''}`}>{chapter.text}</p>
-      </motion.div>
-    </li>
-  )
-}
-
-/** "Our story": the couple, then their memories as polaroids along a golden thread. */
+/** "Our story": the bride and groom with their families. */
 export function Story() {
-  const listRef = useRef<HTMLOListElement>(null)
-  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 70%', 'end 60%'] })
-
   return (
     <section id="story" aria-labelledby="story-title" className="relative scroll-mt-16 px-5 py-28 sm:px-8 md:py-36">
       <div className="mx-auto max-w-5xl">
         <SectionHeading id="story-title" index="03" eyebrow="Our story" title="A love" accent="story" titleMy="ကျွန်ုပ်တို့၏ ချစ်ခြင်းဇာတ်လမ်း" />
         <Couple />
-        <div className="relative">
-          <span aria-hidden="true" className="absolute top-0 bottom-0 left-1/2 hidden w-px bg-gold/15 md:block" />
-          <motion.span
-            aria-hidden="true"
-            className="absolute top-0 bottom-0 left-1/2 hidden w-px origin-top bg-gradient-to-b from-gold-light via-gold to-gold-light md:block"
-            style={{ scaleY: scrollYProgress }}
-          />
-          <ol ref={listRef} className="m-0 grid list-none gap-28 p-0 md:gap-40">
-            {wedding.story.map((c, i) => (
-              <Chapter key={c.title} chapter={c} index={i} />
-            ))}
-          </ol>
-        </div>
       </div>
     </section>
   )

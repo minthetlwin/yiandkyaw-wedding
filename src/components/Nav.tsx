@@ -5,9 +5,9 @@ import { wedding } from '../config/wedding'
 const LINKS = [
   { href: '#invitation', label: 'Invitation' },
   { href: '#story', label: 'Our Story' },
+  { href: '#gifts', label: 'Gifts' },
   { href: '#schedule', label: 'The Day' },
   { href: '#venue', label: 'Venue' },
-  { href: '#gifts', label: 'Gifts' },
 ] as const
 
 export function Nav() {

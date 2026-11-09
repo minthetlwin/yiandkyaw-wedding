@@ -12,8 +12,7 @@ import { silk } from './ui/variants'
 
 const MY_RSVP_KEY = 'yk-wedding:my-rsvp'
 
-const EMPTY_FORM: RsvpSubmission = { name: guestName ?? '', phone: '', attending: true, guests: 1, message: '', dietary: '' }
-const OTHER = 'Other'
+const EMPTY_FORM: RsvpSubmission = { name: guestName ?? '', attending: true, guests: 1, message: '' }
 
 function loadMyRsvp(): RsvpSubmission | null {
   try {
@@ -41,7 +40,6 @@ export function Rsvp() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState<RsvpSubmission | null>(loadMyRsvp)
-  const [dietChoice, setDietChoice] = useState<string>(wedding.rsvp.dietary[0])
   const id = useId()
 
   const update = <K extends keyof RsvpSubmission>(key: K, value: RsvpSubmission[K]) =>
@@ -52,12 +50,7 @@ export function Rsvp() {
     // Honeypot: real people never see or fill this field.
     if (new FormData(e.currentTarget).get('company')) return
 
-    const dietary = dietChoice === OTHER ? form.dietary : dietChoice
-    if (form.attending && dietChoice === OTHER && !form.dietary.trim()) {
-      setError('Please tell us about your dietary needs.')
-      return
-    }
-    const result = validateSubmission({ ...form, dietary }, wedding.rsvp.maxGuestsPerResponse)
+    const result = validateSubmission(form, wedding.rsvp.maxGuestsPerResponse)
     if (!result.ok) {
       setError(result.error)
       return
@@ -69,7 +62,6 @@ export function Rsvp() {
       setStats(await rsvpService.submit(result.value))
       setSubmitted(result.value)
       setForm({ ...EMPTY_FORM, name: '' }) // the next reply is for someone else
-      setDietChoice(wedding.rsvp.dietary[0])
       try {
         localStorage.setItem(MY_RSVP_KEY, JSON.stringify(result.value))
       } catch {
@@ -148,8 +140,9 @@ export function Rsvp() {
                 })}
               </fieldset>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="grid gap-2">
+              {/* Name and party size share a row; the party size folds away for a "decline". */}
+              <div className="relative grid gap-4 sm:grid-cols-2">
+                <label className={`grid gap-2 ${form.attending ? '' : 'sm:col-span-2'}`}>
                   <span className="text-sm font-medium text-muted">Your name *</span>
                   <input
                     className="field"
@@ -161,31 +154,16 @@ export function Rsvp() {
                     aria-describedby={error ? `${id}-error` : undefined}
                   />
                 </label>
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-muted">Phone (optional)</span>
-                  <input
-                    className="field"
-                    type="tel"
-                    inputMode="tel"
-                    value={form.phone}
-                    onChange={(e) => update('phone', e.target.value)}
-                    autoComplete="tel"
-                    placeholder="09 xxx xxx xxx"
-                    maxLength={20}
-                  />
-                </label>
-              </div>
-
-              <AnimatePresence initial={false}>
-                {form.attending && (
-                  <motion.div
-                    className="grid gap-4 overflow-hidden sm:grid-cols-2"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.4, ease: silk }}
-                  >
-                    <label className="grid gap-2">
+                {/* popLayout lifts the leaving field out of the grid, so the name can widen without a jump. */}
+                <AnimatePresence initial={false} mode="popLayout">
+                  {form.attending && (
+                    <motion.label
+                      className="grid gap-2 overflow-hidden"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: silk }}
+                    >
                       <span className="text-sm font-medium text-muted">Number of guests (including you)</span>
                       <select className="field" value={form.guests} onChange={(e) => update('guests', Number(e.target.value))}>
                         {Array.from({ length: wedding.rsvp.maxGuestsPerResponse }, (_, i) => i + 1).map((n) => (
@@ -194,32 +172,10 @@ export function Rsvp() {
                           </option>
                         ))}
                       </select>
-                    </label>
-                    <label className="grid gap-2">
-                      <span className="text-sm font-medium text-muted">Dietary preference</span>
-                      <select className="field" value={dietChoice} onChange={(e) => setDietChoice(e.target.value)}>
-                        {wedding.rsvp.dietary.map((d) => (
-                          <option key={d} value={d}>
-                            {d}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    {dietChoice === OTHER && (
-                      <label className="grid gap-2 sm:col-span-2">
-                        <span className="text-sm font-medium text-muted">Tell us about your dietary needs</span>
-                        <input
-                          className="field"
-                          value={form.dietary}
-                          onChange={(e) => update('dietary', e.target.value)}
-                          maxLength={120}
-                          placeholder="e.g. nut allergy, gluten-free"
-                        />
-                      </label>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    </motion.label>
+                  )}
+                </AnimatePresence>
+              </div>
 
               <label className="grid gap-2">
                 <span className="text-sm font-medium text-muted">Wishes for the couple (optional)</span>

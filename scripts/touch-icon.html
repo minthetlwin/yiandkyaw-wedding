@@ -1,0 +1,24 @@
+<!doctype html>
+<!--
+  The Apple touch icon (iMessage link previews, iOS home screen): 180 × 180.
+  The favicon's seal, full-bleed: iOS rounds the corners itself and fills any
+  transparency with black. Re-render from the project root:
+
+    npx -y playwright@1.63.0 screenshot --viewport-size "180, 180" \
+      "file://$PWD/scripts/touch-icon.html" public/apple-touch-icon.png
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html, body { margin: 0; width: 180px; height: 180px; background: #8e2a2e; }
+      svg { display: block; }
+    </style>
+  </head>
+  <body>
+    <svg width="180" height="180" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="24" fill="none" stroke="#f5d9a8" stroke-opacity=".5" stroke-width="1" />
+      <text x="32" y="39.5" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="19" fill="#f5d9a8">K&amp;S</text>
+    </svg>
+  </body>
+</html>

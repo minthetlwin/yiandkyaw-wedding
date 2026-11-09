@@ -1,10 +1,14 @@
 /**
- * RSVP backend for the Yi & Kyaw wedding site.
+ * RSVP backend for the Kyaw & Shwe wedding site.
  * Stores responses in the bound Google Sheet and returns live totals.
  *
  *   GET  ?action=stats  -> { guests, households, declined }
- *   POST {name, phone, attending, guests, message, dietary}
+ *   POST {name, attending, guests, message}
  *        -> { ok: true, stats } | { ok: false, error }
+ *
+ * The site no longer asks for phone or dietary preference. Those columns stay
+ * (left blank) so existing rows and the column positions computeStats_ reads
+ * are unchanged; no redeploy is needed.
  *
  * Setup: see README.md in this folder.
  */

@@ -27,7 +27,7 @@ export function Gallery() {
   return (
     <section id="moments" aria-labelledby="moments-title" className="relative scroll-mt-16 px-5 py-28 sm:px-8 md:py-36">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading id="moments-title" index="04" eyebrow="Captured moments" title="Little" accent="moments" titleMy="အမှတ်တရ ဓာတ်ပုံများ" />
+        <SectionHeading id="moments-title" index="08" eyebrow="Captured moments" title="Little" accent="moments" titleMy="အမှတ်တရ ဓာတ်ပုံများ" />
         <ul className="m-0 grid list-none auto-rows-[38vw] grid-cols-2 gap-3 p-0 [grid-auto-flow:dense] sm:gap-4 md:auto-rows-[15rem] md:grid-cols-4">
           {photos.map((p, i) => (
             <li key={p.src} className={`${SPANS[i % SPANS.length]} ${i === 0 ? 'col-span-2 row-span-2' : ''}`}>

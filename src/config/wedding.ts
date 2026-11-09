@@ -8,7 +8,9 @@
  * hard to read and should be double-checked before sharing the link.
  */
 
-const photo = (file: string) => `/yiandkyaw/${encodeURIComponent(file)}`
+/** Files in public/, wherever the site is served from (a domain's root, or a folder such as GitHub Pages'). */
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
+const photo = (file: string) => asset(`yiandkyaw/${encodeURIComponent(file)}`)
 
 export interface Person {
   /** Short display name used in the monogram and headings. */
@@ -40,6 +42,17 @@ export interface StoryChapter {
   photo: Photo
 }
 
+export interface ScheduleItem {
+  /** Start, e.g. '1:30 PM'. */
+  time: string
+  /** Optional end, e.g. '3:30 PM'. */
+  endTime?: string
+  title: string
+  titleMy: string
+  text: string
+  icon: 'arrival' | 'rings' | 'dining' | 'camera'
+}
+
 export interface PaymentMethod {
   id: string
   provider: string
@@ -51,8 +64,8 @@ export interface PaymentMethod {
 }
 
 const bride: Person = {
-  short: 'Yi',
-  name: 'Yi',
+  short: 'Shwe',
+  name: 'Shwe',
   nameMy: 'မရွှေရည်ဖြိုး', // VERIFY: bride's full name
   parentsMy: 'ဦးသိန်းဇော် + ဒေါ်ဝင်းဝင်းနွယ် တို့၏ သမီးငယ်',
   role: 'The Bride',
@@ -85,8 +98,8 @@ const groom: Person = {
 export const wedding = {
   bride,
   groom,
-  monogram: 'Y & K',
-  hashtag: '#YiAndKyaw',
+  monogram: 'K & S',
+  hashtag: '#KyawAndShwe',
 
   event: {
     // Myanmar Standard Time is UTC+06:30.
@@ -154,15 +167,19 @@ export const wedding = {
   ] satisfies StoryChapter[],
 
   /**
-   * Order of the day. VERIFY: the invitation note only gives 1:00–3:30 PM;
-   * these moments are a suggested outline within that window — edit freely.
+   * Order of the day, shown in "The Day" section. Add entries to turn it into
+   * a timeline; `endTime` is optional ("1:30 – 3:30 PM" when given).
    */
   schedule: [
-    { time: '1:00 PM', title: 'Guest Arrival', titleMy: 'ဧည့်သည်တော်များ ကြွရောက်ခြင်း', text: 'A warm welcome, soft music and refreshments as you arrive.', icon: 'arrival' },
-    { time: '1:30 PM', title: 'Wedding Ceremony', titleMy: 'မင်္ဂလာ အခမ်းအနား', text: 'We exchange our vows surrounded by family and friends.', icon: 'rings' },
-    { time: '2:00 PM', title: 'Wedding Lunch', titleMy: 'မင်္ဂလာ နေ့လည်စာ', text: 'Share a celebratory meal and raise a toast with us.', icon: 'dining' },
-    { time: '3:00 PM', title: 'Blessings & Photos', titleMy: 'ဆုမွန်ကောင်းများနှင့် ဓာတ်ပုံ', text: 'Blessings, laughter and photographs to remember the day.', icon: 'camera' },
-  ] as { time: string; title: string; titleMy: string; text: string; icon: 'arrival' | 'rings' | 'dining' | 'camera' }[],
+    {
+      time: '1:30 PM',
+      endTime: '3:30 PM',
+      title: 'Chicken Rice & Ice Cream',
+      titleMy: 'ကြက်ဆီထမင်း နှင့် ရေခဲမုန့်',
+      text: 'Join us for a traditional wedding treat of kyet-si htamin, with ice cream to follow.',
+      icon: 'dining',
+    },
+  ] as ScheduleItem[],
 
   gallery: [
     { src: photo('2026-10-31 20.30.40.jpg'), alt: 'The couple embracing under a flowing veil', width: 853, height: 1280 },
@@ -215,7 +232,7 @@ export const wedding = {
    * public/music/. With no file there, the sound control simply doesn't appear.
    */
   music: {
-    src: '/music/canon-in-d.mp3',
+    src: asset('music/canon-in-d.mp3'),
     /** Final volume, 0–1: soft enough to sit under conversation. */
     volume: 0.45,
   },
@@ -224,7 +241,6 @@ export const wedding = {
     /** Last day guests can respond. */
     deadline: '2026-11-21',
     maxGuestsPerResponse: 6,
-    dietary: ['No restrictions', 'Vegetarian', 'Vegan', 'No beef', 'No pork', 'Halal', 'Seafood allergy', 'Other'],
   },
 
 } as const

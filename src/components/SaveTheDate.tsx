@@ -75,7 +75,7 @@ function ScratchCard({ onReveal }: { onReveal: () => void }) {
     ctx.beginPath()
     ctx.arc(cx, cy - 18, 34, 0, Math.PI * 2)
     ctx.stroke()
-    emboss(`${wedding.bride.short[0]}${wedding.groom.short[0]}`, `44px "Pinyon Script", Allura, cursive`, cy - 4)
+    emboss(`${wedding.groom.short[0]}${wedding.bride.short[0]}`, `44px "Pinyon Script", Allura, cursive`, cy - 4)
     emboss('S C R A T C H   T O   R E V E A L', '500 11px "Cormorant Garamond", serif', cy + 42, 0.95)
     emboss('our wedding day', 'italic 20px "Cormorant Garamond", serif', cy + 66, 0.95)
     }
@@ -219,7 +219,7 @@ export function SaveTheDate() {
     <section id="date" aria-labelledby="date-title" className="section-wash-paper relative scroll-mt-16 px-5 py-28 sm:px-8 md:py-36">
       <div className="mx-auto max-w-6xl">
         <SectionHeading id="date-title" index="02" eyebrow="Save the date" title="Mark your" accent="calendar" titleMy="ရက်စွဲ မှတ်သားထားပါ" />
-        <div className="grid items-center gap-16 md:grid-cols-2">
+        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
           <Reveal>
             <div className="relative mx-auto aspect-[4/3] w-full max-w-md">
               {/* the prize under the foil */}
@@ -238,9 +238,12 @@ export function SaveTheDate() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <Calendar drawn={revealed} />
+            {/* On phones the scratch card alone carries the date; the month grid is for wider screens. */}
+            <div className="hidden md:block">
+              <Calendar drawn={revealed} />
+            </div>
             <motion.div
-              className="mt-10 flex flex-wrap justify-center gap-3"
+              className="flex flex-wrap justify-center gap-3 md:mt-10"
               initial={false}
               animate={{ opacity: revealed ? 1 : 0.35 }}
               transition={{ duration: 0.8 }}

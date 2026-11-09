@@ -1,0 +1,4 @@
+# Link-preview bots (TikTok, Facebook/Messenger, Telegram, Viber, X…) are welcome:
+# they read the page's title, description and share image.
+User-agent: *
+Allow: /

@@ -63,14 +63,14 @@ function Words() {
 
       <h1 className="letterpress mt-1 font-display text-[clamp(3.1rem,min(15vw,9svh),6.6rem)] leading-[1.2] font-normal text-ink sm:mt-2">
         <span className="sr-only">
-          {bride.short} and {groom.short}
+          {groom.short} and {bride.short}
         </span>
-        <span aria-hidden="true">{bride.short}</span>
+        <span aria-hidden="true">{groom.short}</span>
         {/* The copperplate's own ampersand is too ornate to read; engravers set it in the italic. */}
         <span aria-hidden="true" className="foil-sweep mx-[0.08em] inline-block px-[0.1em] font-serif text-[0.68em] italic [text-shadow:none]">
           &amp;
         </span>
-        <span aria-hidden="true">{groom.short}</span>
+        <span aria-hidden="true">{bride.short}</span>
       </h1>
       <p lang="my" className="text-[0.78rem] text-muted sm:text-[0.9rem]">
         {groom.nameMy} <span className="text-gold">·</span> {bride.nameMy}
@@ -121,7 +121,7 @@ export function HeroCardContent({ live = false }: { live?: boolean }) {
 export function Hero({ revealed, frameRef }: { revealed: boolean; frameRef: Ref<HTMLDivElement> }) {
   const { bride, groom } = wedding
   return (
-    <section id="top" aria-label={`${bride.short} and ${groom.short} are getting married`} className="relative p-3 sm:p-5">
+    <section id="top" aria-label={`${groom.short} and ${bride.short} are getting married`} className="relative p-3 sm:p-5">
       <CardFrame ref={frameRef} className="h-[calc(100svh-1.5rem)] min-h-[38rem] sm:h-[calc(100svh-2.5rem)]">
         <HeroCardContent live={revealed} />
         <motion.a

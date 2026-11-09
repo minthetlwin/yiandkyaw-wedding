@@ -76,7 +76,8 @@ export default function App() {
 
       <AnimatePresence>{!opened && <Intro target={heroFrame} onBurst={onBurst} onZoom={onZoom} onStart={startMusic} onDone={onDone} />}</AnimatePresence>
 
-      {opened && <MusicToggle />}
+      {/* Present from the envelope on: opening it starts the music, this starts or pauses it any time. */}
+      <MusicToggle />
 
       {/* Opacity only: a transform here would turn the fixed nav into a scrolling element. */}
       <motion.div
@@ -97,11 +98,11 @@ export default function App() {
           <Invitation />
           <SaveTheDate />
           <Story />
-          <Gallery />
+          <Gifts />
           <Schedule />
           <Venue />
           <Rsvp />
-          <Gifts />
+          <Gallery />
         </main>
         <Footer />
       </div>

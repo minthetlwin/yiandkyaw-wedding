@@ -22,7 +22,7 @@ function EnvelopeLettering() {
       <div>
         <p className="eyebrow !text-[0.55rem]">The wedding of</p>
         <p className="letterpress mt-1 font-display text-[2.5rem] leading-[1.3] text-ink sm:text-5xl">
-          {bride.short} <span className="gold-text px-[0.1em] font-serif text-[0.68em] italic">&amp;</span> {groom.short}
+          {groom.short} <span className="gold-text px-[0.1em] font-serif text-[0.68em] italic">&amp;</span> {bride.short}
         </p>
         <p className="mt-1 font-serif text-sm tracking-[0.3em] text-muted">28 · 11 · 2026</p>
       </div>
@@ -258,7 +258,7 @@ export function Intro({ target, onBurst, onZoom, onStart, onDone }: IntroProps) 
                     ) : (
                       <>
                         <p className="font-display text-[clamp(1.35rem,5vw,2rem)] leading-tight text-champagne/85">
-                          {bride.short} <span className="font-serif text-[0.7em] italic">&amp;</span> {groom.short}
+                          {groom.short} <span className="font-serif text-[0.7em] italic">&amp;</span> {bride.short}
                         </p>
                         <p className="mt-1 text-[0.55rem] tracking-[0.4em] text-muted uppercase">28 · 11 · 2026</p>
                       </>

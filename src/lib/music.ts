@@ -13,10 +13,10 @@ import { wedding } from '../config/wedding'
  */
 
 export type MusicStatus =
-  /** Not started yet: waiting for the guest's first tap. */
+  /** Not playing yet: waiting for the guest's tap (or the browser refused to start it). */
   | 'idle'
   | 'playing'
-  /** Off, by the guest's choice or because the browser refused to play. */
+  /** Off, by the guest's choice. */
   | 'paused'
   /** The file is missing or can't be decoded: the control hides itself. */
   | 'unavailable'
@@ -84,8 +84,9 @@ async function play() {
   try {
     await a.play() // called synchronously, so it still counts as part of the tap
   } catch {
-    // Either the browser blocked it or the file is bad; the 'error' listener covers the latter.
-    if (state.status !== 'unavailable') setStatus('paused')
+    // Either the browser blocked it or the file is bad (the 'error' listener covers that).
+    // Back to idle, so the button invites a tap rather than looking switched off.
+    if (state.status !== 'unavailable') setStatus('idle')
     return
   }
   setStatus('playing')
@@ -131,6 +132,6 @@ if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {
     if (!audio || state.status !== 'playing') return
     if (document.hidden) audio.pause()
-    else void audio.play().catch(() => setStatus('paused'))
+    else void audio.play().catch(() => setStatus('idle'))
   })
 }

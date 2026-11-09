@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* The site is light only. Tailwind's `dark:` variant would otherwise follow the
+   device's setting; tie it to a class the site never sets, so it can't fire. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------------------------------------------------------------------------
    Ethereal ivory: soft white paper, warm cream and textured linen, champagne
    gold for leaf, foil and ink accents, warm taupe type. Feathers, not flowers.
@@ -63,8 +67,11 @@
 }
 
 @layer base {
+  /* Light only, whatever the device's setting: `only` also tells browsers not to
+     auto-darken the page. The ivory ground covers iOS overscroll, too. */
   html {
-    color-scheme: light;
+    color-scheme: only light;
+    background: var(--color-ivory);
     -webkit-text-size-adjust: 100%;
     /* The scrollbar's space is reserved while the intro locks scrolling, so the
        page never shifts under the letter as it lands on the hero card. */

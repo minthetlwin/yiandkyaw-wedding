@@ -15,7 +15,7 @@ export function Footer() {
         </p>
         <FeatherDivider className="mt-14" />
         <p className="mt-6 font-script text-5xl">
-          {bride.short} <span className="text-champagne">&amp;</span> {groom.short}
+          {groom.short} <span className="text-champagne">&amp;</span> {bride.short}
         </p>
         <p className="eyebrow mt-3">28 · 11 · 2026 &nbsp;·&nbsp; {hashtag}</p>
       </Reveal>

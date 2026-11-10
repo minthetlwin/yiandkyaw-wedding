@@ -41,7 +41,20 @@ export const DownloadIcon = (p: IconProps) => (
   </svg>
 )
 
-export const ChevronIcon = (p: IconProps) => (
+export const CopyIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="8.5" y="8.5" width="11" height="11" rx="2.5" />
+    <path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" />
+  </svg>
+)
+
+export const CheckIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
+  </svg>
+)
+
+export const ChevronIcon =(p: IconProps) => (
   <svg {...base} {...p}>
     <path d="m9 5 7 7-7 7" />
   </svg>

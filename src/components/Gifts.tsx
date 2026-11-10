@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { wedding, type PaymentMethod } from '../config/wedding'
-import { DownloadIcon, HeartIcon } from './Icons'
+import { copyText } from '../lib/clipboard'
+import { CheckIcon, CopyIcon, DownloadIcon, HeartIcon } from './Icons'
 import { SectionHeading } from './ui/Heading'
 import { Reveal } from './ui/motion'
 
@@ -63,8 +65,10 @@ function PaymentCard({ method }: { method: PaymentMethod }) {
           <dd className="m-0 mt-1 text-lg text-ink">{method.accountName}</dd>
         </div>
         <div className="text-right">
-          <dt className="eyebrow !text-[0.6rem] !text-muted">Account</dt>
-          <dd className="m-0 mt-1 text-lg text-ink tabular-nums">{method.accountHint}</dd>
+          <dt className="eyebrow !text-[0.6rem] !text-muted">Phone</dt>
+          <dd className="m-0 mt-1">
+            <CopyPhone phone={method.phone} provider={method.provider} />
+          </dd>
         </div>
       </dl>
 
@@ -73,5 +77,42 @@ function PaymentCard({ method }: { method: PaymentMethod }) {
       </a>
       </div>
     </Reveal>
+  )
+}
+
+const COPIED_MS = 2_000
+
+/**
+ * The wallet number, tap to copy, ready to paste into the payment app. The hint
+ * beneath it confirms the copy; if the browser refuses, the digits stay
+ * selectable to copy by hand.
+ */
+function CopyPhone({ phone, provider }: { phone: string; provider: string }) {
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle')
+
+  useEffect(() => {
+    if (state === 'idle') return
+    const id = window.setTimeout(() => setState('idle'), COPIED_MS)
+    return () => window.clearTimeout(id)
+  }, [state])
+
+  const copied = state === 'copied'
+  const Icon = copied ? CheckIcon : CopyIcon
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={async () => setState((await copyText(phone)) ? 'copied' : 'failed')}
+        aria-label={`Copy ${provider} phone number ${phone.split('').join(' ')}`}
+        className="group -mr-1.5 inline-flex cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-1.5 py-0.5 text-lg text-ink tabular-nums transition-colors select-all hover:text-champagne focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne"
+      >
+        {phone}
+        <Icon width={16} height={16} className="text-champagne transition-transform group-active:scale-90" />
+      </button>
+      <span role="status" className={`block text-xs ${state === 'failed' ? 'text-muted' : 'text-champagne'}`}>
+        {copied ? 'Copied' : state === 'failed' ? 'Press and hold to copy' : <span className="text-muted">Tap to copy</span>}
+      </span>
+    </>
   )
 }

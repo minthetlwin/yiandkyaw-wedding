@@ -14,6 +14,7 @@ import { Schedule } from './components/Schedule'
 import { Story } from './components/Story'
 import { Venue } from './components/Venue'
 import { usePrefersReducedMotion } from './hooks/hooks'
+import { useIdleAutoScroll } from './hooks/useIdleAutoScroll'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import type { Burst } from './intro/FeatherField'
 import { prepareMusic, startMusic } from './lib/music'
@@ -56,6 +57,7 @@ export default function App() {
   }, [opened])
 
   useSmoothScroll(opened)
+  useIdleAutoScroll(opened)
 
   return (
     <MotionConfig reducedMotion="user">

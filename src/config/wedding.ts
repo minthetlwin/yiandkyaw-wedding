@@ -12,6 +12,9 @@
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 const photo = (file: string) => asset(`yiandkyaw/${encodeURIComponent(file)}`)
 
+/** Both wallets (KBZPay, AYA Pay) are registered to this number. */
+const GIFT_PHONE = '0943157795'
+
 export interface Person {
   /** Short display name used in the monogram and headings. */
   short: string
@@ -57,8 +60,8 @@ export interface PaymentMethod {
   id: string
   provider: string
   accountName: string
-  /** Masked account / phone number as printed on the QR card. */
-  accountHint: string
+  /** The wallet's phone number, digits only, exactly as a guest types it into the app. */
+  phone: string
   qr: Photo
   brandColor: string
 }
@@ -198,7 +201,7 @@ export const wedding = {
       id: 'kbzpay',
       provider: 'KBZPay',
       accountName: 'U Kyaw Htet Winn',
-      accountHint: '******7795',
+      phone: GIFT_PHONE,
       qr: {
         src: photo('2026-10-31 20.29.07.jpg'),
         alt: 'KBZPay QR code for U Kyaw Htet Winn',
@@ -213,7 +216,7 @@ export const wedding = {
       id: 'ayapay',
       provider: 'AYA Pay',
       accountName: 'KYAW HTET WIN',
-      accountHint: '*****7795',
+      phone: GIFT_PHONE,
       qr: {
         src: photo('photo_2026-11-01 15.18.17.jpeg'),
         alt: 'AYA Pay QR code for Kyaw Htet Win',

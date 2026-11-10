@@ -231,11 +231,11 @@ export const wedding = {
 
   /**
    * Background music, started by the guest's tap on the envelope's seal:
-   * Pachelbel's Canon in D, violin & piano duet (Ariana Strings), in
-   * public/music/. With no file there, the sound control simply doesn't appear.
+   * Playdate (violin, slowed; Lindsey Stirling), in public/music/.
+   * With no file there, the sound control simply doesn't appear.
    */
   music: {
-    src: asset('music/canon-in-d.mp3'),
+    src: asset('music/playdate-violin.mp3'),
     /** Final volume, 0–1: soft enough to sit under conversation. */
     volume: 0.45,
   },

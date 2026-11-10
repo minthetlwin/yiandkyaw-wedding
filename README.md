@@ -73,8 +73,8 @@ description, and `public/share/kyaw-and-shwe.jpg`: the couple's portrait with
 
 ## Background music
 
-The song is Pachelbel's Canon in D (violin & piano, Ariana Strings) at
-`public/music/canon-in-d.mp3`; to change it, replace the file or the `music.src`
+The song is Playdate (violin, slowed; Lindsey Stirling) at
+`public/music/playdate-violin.mp3`; to change it, replace the file or the `music.src`
 path. It starts, fading in,
 when a guest taps the envelope's seal (or Skip), loops, pauses when the tab is
 hidden, and a small sound button lets guests turn it off for that visit;
